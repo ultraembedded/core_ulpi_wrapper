@@ -5,7 +5,7 @@ SYSTEMC_HOME  ?= /opt/systemc-2.3.1
 
 TRACE         ?= 1
 
-RTL_DUT        = ../rtl/ulpi_wrapper.v
+RTL_DUT        = ../src_v/ulpi_wrapper.v
 
 #########################################################
 # Source
@@ -26,7 +26,7 @@ INC_PATH  = -I.
 INC_PATH += -I/usr/include/iverilog
 INC_PATH += -I$(SYSTEMC_HOME)/include
 
-VINC_PATH = -I. -I../rtl
+VINC_PATH = -I. -I../src_v
 VFLAGS    = -DTRACE=$(TRACE)
 
 CFLAGS    = -c -fpic

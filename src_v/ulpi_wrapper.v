@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------
 //                        ULPI (Link) Wrapper
-//                              V1.1
+//                              V1.2
 //                        Ultra-Embedded.com
-//                        Copyright 2015-2018
+//                        Copyright 2015-2020
 //
 //                 Email: admin@ultra-embedded.com
 //
@@ -28,6 +28,35 @@
 // USA
 //-----------------------------------------------------------------
 
+module ulpi_wrapper
+(
+    // Inputs
+     input           ulpi_clk60_i
+    ,input           ulpi_rst_i
+    ,input  [  7:0]  ulpi_data_out_i
+    ,input           ulpi_dir_i
+    ,input           ulpi_nxt_i
+    ,input  [  7:0]  utmi_data_out_i
+    ,input           utmi_txvalid_i
+    ,input  [  1:0]  utmi_op_mode_i
+    ,input  [  1:0]  utmi_xcvrselect_i
+    ,input           utmi_termselect_i
+    ,input           utmi_dppulldown_i
+    ,input           utmi_dmpulldown_i
+
+    // Outputs
+    ,output [  7:0]  ulpi_data_in_o
+    ,output          ulpi_stp_o
+    ,output [  7:0]  utmi_data_in_o
+    ,output          utmi_txready_o
+    ,output          utmi_rxvalid_o
+    ,output          utmi_rxactive_o
+    ,output          utmi_rxerror_o
+    ,output [  1:0]  utmi_linestate_o
+);
+
+
+
 //-----------------------------------------------------------------
 // Module: UTMI+ to ULPI Wrapper
 //
@@ -37,32 +66,6 @@
 //   - I/O synchronous to 60MHz ULPI clock input (from PHY)
 //   - Tested against SMSC/Microchip USB3300 in device mode.
 //-----------------------------------------------------------------
-module ulpi_wrapper
-(
-    // ULPI Interface (PHY)
-    input             ulpi_clk60_i,
-    input             ulpi_rst_i,
-    input  [7:0]      ulpi_data_out_i,
-    output [7:0]      ulpi_data_in_o,
-    input             ulpi_dir_i,
-    input             ulpi_nxt_i,
-    output            ulpi_stp_o,
-
-    // UTMI Interface (SIE)
-    input             utmi_txvalid_i,
-    output            utmi_txready_o,
-    output            utmi_rxvalid_o,
-    output            utmi_rxactive_o,
-    output            utmi_rxerror_o,
-    output [7:0]      utmi_data_in_o,
-    input  [7:0]      utmi_data_out_i,  
-    input  [1:0]      utmi_xcvrselect_i,
-    input             utmi_termselect_i,
-    input  [1:0]      utmi_op_mode_i,
-    input             utmi_dppulldown_i,
-    input             utmi_dmpulldown_i,
-    output [1:0]      utmi_linestate_o
-);
 
 //-----------------------------------------------------------------
 // States
@@ -254,6 +257,7 @@ reg                 utmi_rxerror_q;
 reg                 utmi_rxactive_q;
 reg [1:0]           utmi_linestate_q;
 reg [7:0]           utmi_data_q;
+
 
 always @ (posedge ulpi_clk60_i or posedge ulpi_rst_i)
 if (ulpi_rst_i)
